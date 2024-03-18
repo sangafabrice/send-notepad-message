@@ -5,10 +5,10 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 $SenderDialog = [Form]::New() | ForEach-Object {
-  $_.Size = '300, 550'
+  $_.Size = '400, 650'
   $_.Text = 'Notepad Message'
   $_.Icon = [Icon]::New("$PSScriptRoot\ui.ico")
-  $_.Font = 'Verdana,10'
+  $_.Font = 'Segoe UI,14'
   $_.StartPosition = 'CenterScreen'
   $_.MinimumSize = $_.Size
   $_.MaximumSize = $_.Size
@@ -16,9 +16,9 @@ $SenderDialog = [Form]::New() | ForEach-Object {
 }
 $SenderDialog.Controls.AddRange(@(
   ($ComputerNameTextBox = [TextBox]::new() | ForEach-Object {
-    $_.Width = 260
+    $_.Width = 359
     $_.BorderStyle = 'FixedSingle'
-    $_.Location = "12, 35"
+    $_.Location = "12, 41"
     Return $_
   })
   [Label]::new() | ForEach-Object {
@@ -28,21 +28,21 @@ $SenderDialog.Controls.AddRange(@(
     Return $_
   }
   ($UsernameTextBox = [TextBox]::new() | ForEach-Object {
-    $_.Width = 260
+    $_.Width = 359
     $_.BorderStyle = 'FixedSingle'
-    $_.Location = "12, 90"
+    $_.Location = "12, 106"
     Return $_
   })
   [Label]::new() | ForEach-Object {
     $_.AutoSize = $True
     $_.Text = 'Username:'
-    $_.Location = '10, 70'
+    $_.Location = '10, 80'
     Return $_
   }
   ($PasswordTextBox = [TextBox]::new() | ForEach-Object {
-    $_.Width = 260
+    $_.Width = 359
     $_.BorderStyle = 'FixedSingle'
-    $_.Location = "12, 145"
+    $_.Location = "12, 171"
     $_.Text = '';
     $_.PasswordChar = '*';
     Return $_
@@ -50,29 +50,29 @@ $SenderDialog.Controls.AddRange(@(
   [Label]::new() | ForEach-Object {
     $_.AutoSize = $True
     $_.Text = 'Password:'
-    $_.Location = '10, 125'
+    $_.Location = '10, 145'
     Return $_
   }
   ($MessageTextBox = [TextBox]::new() | ForEach-Object {
-    $_.Width = 260
+    $_.Width = 359
     $_.Height = 200
     $_.BorderStyle = 'FixedSingle'
     $_.Multiline = $True
-    $_.Location = "12, 240"
+    $_.Location = "12, 341"
     Return $_
   })
   [Label]::new() | ForEach-Object {
     $_.AutoSize = $True
     $_.Text = 'Message:'
-    $_.Location = '10, 220'
+    $_.Location = '10, 315'
     Return $_
   }
   ($SendButton = [Button]::new() | ForEach-Object {
-    $_.Width = 260
+    $_.Width = 359
     $_.Text = 'Send'
     $_.AutoSize = $True
     $_.FlatStyle = 'Flat'
-    $_.Location = '12, 455'
+    $_.Location = '12, 555'
     Return $_
   })
 ))
