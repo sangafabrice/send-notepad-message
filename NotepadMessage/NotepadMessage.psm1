@@ -1,50 +1,29 @@
 using namespace System.Management.Automation
 
 Function Send-NotepadMessage {
+  [CmdletBinding()]
   Param(
-    $ComputerName,
-    $Message,
+    [ValidateNotNullOrWhiteSpace()]
+    [string] $ComputerName,
+    [string] $Message,
     [ValidateNotNull()]
-    [PSCredential]
     [Credential()]
-    $Credential = [PSCredential]::Empty
+    [PSCredential] $Credential = [PSCredential]::Empty
   )
-  If ($Credential -ne [PSCredential]::Empty) {
-    $SenderFilename = ".\Message from  $Env:USERNAME.txt"
-    $SssArgs = @{
-      ComputerName = $ComputerName
-      Credential = $Credential
-    }
-    $CmdArgs = @{
-      Session = ($Session = New-PSSession @SssArgs)
-      Scriptblock = {
-        $TaskName = 'RemoteExec-{0}' -f ((New-Guid).Guid -split '\-')[-1]
-        $Using:Message > $Using:SenderFilename
-        $ActArgs = @{
-          Execute = 'notepad.exe'
-          Argument = $Using:SenderFilename
-          WorkingDirectory = "$PWD"
-        }
-        $SettingsSet = @{
-          MultipleInstances = 'IgnoreNew'
-          AllowStartIfOnBatteries = $False
-          DontStopIfGoingOnBatteries = $False
-          DontStopOnIdleEnd = $False
-          StartWhenAvailable = $False
-        }
-        $RegArgs = @{
-          TaskName = $TaskName
-          Action = New-ScheduledTaskAction @ActArgs
-          Settings = New-ScheduledTaskSettingsSet @SettingsSet
-          RunLevel = 'Highest'
-        }
-        [void] (Register-ScheduledTask @RegArgs -Force)
-        Start-ScheduledTask -TaskName $TaskName
-        Unregister-ScheduledTask -TaskName $TaskName -Confirm:$False
-        Remove-Item $Using:SenderFilename -Force
-      }
-    }
-    Invoke-Command @CmdArgs
-    Remove-PSSession $Session
+  If ($Credential -eq [PSCredential]::Empty) {
+    Return
   }
+  $SenderFilename = ".\Message from  $Env:USERNAME.txt"
+  $Session = New-PSSession -ComputerName $ComputerName -Credential $Credential
+  Invoke-Command -Session $Session -Scriptblock {
+    $TaskName = "RemoteExec-$(New-Guid)"
+    $Using:Message | Out-File $Using:SenderFilename
+    $TaskAction = New-ScheduledTaskAction -Execute notepad.exe -Argument $Using:SenderFilename -WorkingDirectory $PWD
+    $TaskSettings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -DontStopOnIdleEnd -StartWhenAvailable
+    [void] (Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Settings $TaskSettings -RunLevel Highest -Force)
+    Start-ScheduledTask -TaskName $TaskName
+    Unregister-ScheduledTask -TaskName $TaskName -Confirm:$False
+    Remove-Item $Using:SenderFilename -Force
+  }
+  Remove-PSSession $Session
 }
