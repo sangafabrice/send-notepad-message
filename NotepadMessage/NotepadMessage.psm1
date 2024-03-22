@@ -45,7 +45,6 @@ Function Send-NotepadMessage {
       }
     }
     Invoke-Command @CmdArgs
-    Exit-PSSession
     Remove-PSSession $Session
   }
 }
