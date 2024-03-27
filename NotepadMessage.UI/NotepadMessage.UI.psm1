@@ -1,3 +1,7 @@
+<#
+.SYNOPSIS
+Creates a new NotepadMessage Windows form.
+#>
 using namespace System.Windows.Forms
 using namespace System.Drawing
 
@@ -78,6 +82,14 @@ $SenderDialog.Controls.AddRange(@(
 ))
 
 Function Set-SendButtonEnabled {
+  <#
+  .SYNOPSIS
+  Set the Send button active state.
+  .DESCRIPTION
+  Set-SendButtonEnabled disables the Send button if one of the header fields of the Notepad message is empty.
+  #>
+  [CmdletBinding()]
+  Param()
   If (
     [string]::IsNullOrWhiteSpace($Script:ComputerNameTextBox.Text) -or
     [string]::IsNullOrWhiteSpace($Script:UsernameTextBox.Text) -or
@@ -90,7 +102,9 @@ Function Set-SendButtonEnabled {
   }
 }
 
+# Initialize the active state of the Send button.
 Set-SendButtonEnabled
+# Set that any change in one of the header text fields changes the active state of the Send button.
 $ComputerNameTextBox.add_TextChanged({
   Set-SendButtonEnabled
 })
@@ -103,4 +117,5 @@ $PasswordTextBox.add_TextChanged({
 
 Export-ModuleMember -Variable *
 
+# Just for making the code clean.
 [void] $MessageTextBox
