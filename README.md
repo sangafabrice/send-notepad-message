@@ -1,0 +1,5 @@
+![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiJPFvEddZkF6u7_zxs5W3-_Ah_V-8CqJFPjZaea09l-9z-5BHrZaEdOyCMyZdFPrIAN0WuJCeUUoNs0KnlAt30gZUD8E9JFkcOkpk23IANEZDpMoU60ZtwLr41F71P3P0Qcv1-KTK92hbr1VgOVde-YRZr52JuyB0LswCjorYKHDPbKvjpGyQpGotNHF8l/s1600/send-notepadmessage.png)
+
+The goal is to run a command to open a program window like Notepad or Photoshop on a remote computer desktop using <strong>PowerShell Remoting</strong>. This powerful feature allows us to establish remote sessions, but by default, it only allows executing scripts on the target machine as <em>services</em>. So, the established session is disconnected and not visible to the user watching the remote computer screen. The graphic interfaces of programs started in the session are not visible either. However, we are set in this tutorial to show how to leverage the Task Scheduler to open an application window on a remote desktop and make it visible to the user's eyes.
+
+[**READ MORE**](https://fromthetechlab.blogspot.com/2024/03/powershell-remoting-start-program-on-active-desktop.html)
